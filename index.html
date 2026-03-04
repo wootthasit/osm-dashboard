@@ -168,9 +168,10 @@
   .award-banner strong{color:#5D4037;}
 
   /* MEDAL BADGES — corner badge */
-  .rank-badge{position:absolute;top:0;right:0;font-size:10px;font-weight:700;padding:3px 10px;border-radius:0 14px 0 10px;}
+  .rank-badge{position:absolute;top:-1px;right:10px;font-size:10px;font-weight:700;padding:4px 12px;border-radius:0 0 10px 10px;}
   .rank-badge.trophy{background:linear-gradient(135deg,#FFD700,#FFA500);color:#7a4000;}
   .rank-badge.gold{background:linear-gradient(135deg,#FFD700,#DAA520);color:#7a5000;}
+  .person-card.has-badge{overflow:visible;padding-top:28px;}
 
   /* GRADIENT PROGRESS BARS */
   .fill-gold{background:linear-gradient(90deg,#00c47d,#DAA520);}
@@ -751,7 +752,7 @@ function renderCards() {
 
   let bannerHtml=`📊 อสม. ${tabLabel} <strong>${total}</strong> คน`;
   if(trophyCount>0||medalCount>0){
-    bannerHtml+=` : 🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span> · 🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
+    bannerHtml+=` :<br>🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span><br>🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
   }
   html+=`<div class="award-banner">${bannerHtml}</div>`;
 
@@ -765,7 +766,7 @@ function renderCards() {
       const pNum=peopleNum(r.stats[1]);
       const medal=getMedalTier(pNum);
 
-      html+=`<div class="person-card">`;
+      html+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
       if(medal.tier>0) html+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
       html+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
         <div class="person-info">
