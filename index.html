@@ -163,8 +163,12 @@
   .mini-donut svg{width:100%;height:100%;transform:rotate(-90deg);}
   .mini-donut-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16px;font-weight:700;line-height:1;}
 
+  /* SEARCH + FILTER BLOCK — ใต้ award banner เหนือการ์ด อสม. */
+  .search-filter-block{padding:9px 0 0;}
+  .filter-chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;margin-bottom:9px;}
+
   /* AWARD BANNER — separate block */
-  .award-banner{background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:10px 16px;margin:10px 0 9px;font-size:13px;color:#6B5000;line-height:1.8;}
+  .award-banner{background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:10px 16px;margin:10px 0 0;font-size:13px;color:#6B5000;line-height:1.8;}
   .award-banner strong{color:#5D4037;}
 
   /* MEDAL BADGES — corner badge */
@@ -247,10 +251,6 @@
   <div class="summary-grid" id="summaryGrid"></div>
   <div class="note-bar" id="noteBox"></div>
   <div class="tab-bar" id="tabBar"></div>
-  <div class="search-wrap">
-    <input class="search-box" type="text" id="searchInput" placeholder="🔍 ค้นหาชื่อ หรือ นามสกุล" oninput="renderAll()">
-  </div>
-  <div class="filter-bar" id="filterBar"></div>
   <div class="content" id="mainContent">
     <div class="empty"><div class="empty-icon">⏳</div>กำลังโหลดข้อมูล...</div>
   </div>
@@ -551,31 +551,27 @@ async function loadFromSheets() {
 }
 
 /* ==========================================================
-   FILTER CHIPS — สร้างตาม metrics ที่เลือก
+   FILTER CHIPS — 4 ปุ่มคงที่ (render inline ใน renderCards)
    ========================================================== */
-function buildFilterChips() {
-  const sel = getSelectedMetrics();
-  let html = '<button class="chip active" onclick="setFilter(\'all\',this)">อสม. ทั้งหมด</button>';
-  if (sel.length >= 2) {
-    html += '<button class="chip" onclick="setFilter(\'all_done\',this)">✅ สำเร็จทุกรายการ</button>';
-    html += '<button class="chip" onclick="setFilter(\'partial\',this)">🔄 สำเร็จบางส่วน</button>';
-  }
-  sel.forEach((m, i) => {
-    html += `<button class="chip" onclick="setFilter('done_${activeMetrics[i]}',this)">✓ ${m.name}</button>`;
-  });
-  html += '<button class="chip" onclick="setFilter(\'none_done\',this)">⏳ รอดำเนินการ</button>';
-  document.getElementById('filterBar').innerHTML = html;
+let searchQuery = '';
+function buildFilterChips() { /* ไม่ใช้แล้ว — chips สร้างใน renderCards */ }
+function getFilterChipsHtml(innerOnly) {
+  const filters = [
+    { key:'all',      label:'อสม. ทั้งหมด' },
+    { key:'all_done', label:'&#x2705; สำเร็จทุกรายการ' },
+    { key:'partial',  label:'&#x1F504; สำเร็จบางส่วน' },
+    { key:'none_done',label:'&#x23F3; รอดำเนินการ' },
+  ];
+  const btns = filters.map(f=>`<button class="chip${currentFilter===f.key?' active':''}" onclick="setFilterInline('${f.key}')">${f.label}</button>`).join('');
+  return innerOnly ? btns : `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:0;">${btns}</div>`;
+}
+function setFilterInline(filter) {
+  currentFilter = filter;
+  renderAll(); setTimeout(notifyHeight, 300);
 }
 
 function filterFromCard(filter) {
   currentFilter = filter;
-  const chips = document.querySelectorAll('.chip');
-  chips.forEach(c => c.classList.remove('active'));
-  /* หา chip ที่มี onclick ตรงกับ filter */
-  for (const c of chips) {
-    const onclick = c.getAttribute('onclick') || '';
-    if (onclick.includes(`'${filter}'`)) { c.classList.add('active'); break; }
-  }
   renderAll(); setTimeout(notifyHeight, 300);
 }
 
@@ -589,8 +585,6 @@ function switchTab(tab) {
 }
 function setFilter(filter,el) {
   currentFilter=filter;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
   renderAll();setTimeout(notifyHeight,300);
 }
 
@@ -616,7 +610,7 @@ function matchFilter(person) {
 }
 
 function getFilteredData() {
-  const q=document.getElementById('searchInput').value.trim().replace(/\s/g,'');
+  const q=searchQuery.trim().replace(/\s/g,'');
   const result={};
   (currentTab==='all'?tambons:[currentTab]).forEach(t=>{
     const rows=(raw[t]||[]).filter(r=>{
@@ -755,6 +749,22 @@ function renderCards() {
     bannerHtml+=` :<br>🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span><br>🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
   }
   html+=`<div class="award-banner">${bannerHtml}</div>`;
+
+  /* ===== Search + 4 Filter chips — อยู่ใต้ award banner เหนือการ์ด อสม. ===== */
+  const chipBtns = [
+    {key:'all',       label:'อสม. ทั้งหมด'},
+    {key:'all_done',  label:'✅ สำเร็จทุกรายการ'},
+    {key:'partial',   label:'🔄 สำเร็จบางส่วน'},
+    {key:'none_done', label:'⏳ รอดำเนินการ'},
+  ].map(f=>`<button class="chip${currentFilter===f.key?' active':''}" onclick="setFilterInline('${f.key}')">${f.label}</button>`).join('');
+
+  html+=`<div class="search-filter-block">
+    <input class="search-box" type="text" id="searchInput"
+      placeholder="🔍 ค้นหาชื่อ หรือ นามสกุล"
+      value="${searchQuery.replace(/"/g,'&quot;')}"
+      oninput="searchQuery=this.value;renderAll();">
+    <div class="filter-chips-row">${chipBtns}</div>
+  </div>`;
 
   if(!allFilteredRows.length){
     html+=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
