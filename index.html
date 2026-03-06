@@ -196,10 +196,15 @@
     <div class="err-msg" id="errId"></div>
     <div class="hint">Copy URL จากช่อง browser ของ Google Sheets แล้ววางได้เลย</div>
 
-    <label class="field-label">📋 ชื่อ Sheet</label>
-    <input id="inputSheet" type="text" placeholder="เช่น Worksheet" value="Worksheet">
-    <div class="err-msg" id="errSheet"></div>
-    <div class="hint">ดูชื่อได้จากแถบด้านล่างของ Google Sheets</div>
+    <div style="margin-bottom:14px;">
+      <span onclick="toggleAdvanced()" style="font-size:12px;color:var(--gray);cursor:pointer;user-select:none;">⚙ ตั้งค่าขั้นสูง <span id="advArrow">▸</span></span>
+      <div id="advancedSection" style="display:none;margin-top:10px;">
+        <label class="field-label">📋 ชื่อ Sheet</label>
+        <input id="inputSheet" type="text" placeholder="เช่น Worksheet" value="Worksheet">
+        <div class="err-msg" id="errSheet"></div>
+        <div class="hint">ใช้เมื่อมีหลาย Sheet — ดูชื่อได้จากแถบด้านล่างของ Google Sheets<br>⚠ ถ้าไม่แน่ใจ ไม่ต้องแก้ไข ระบบจะใช้ Sheet แรกอัตโนมัติ</div>
+      </div>
+    </div>
 
     <!-- Checkbox เลือกผลงาน -->
     <div class="cb-section">
@@ -332,17 +337,23 @@ function extractSheetId(input) {
   const m = input.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
   return m ? m[1] : input;
 }
+function toggleAdvanced() {
+  const sec = document.getElementById('advancedSection');
+  const arrow = document.getElementById('advArrow');
+  const isOpen = sec.style.display !== 'none';
+  sec.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▸' : '▾';
+}
+
 function validateInputs() {
   let id = document.getElementById('inputId').value.trim();
-  const sh = document.getElementById('inputSheet').value.trim();
+  const shEl = document.getElementById('inputSheet');
+  const sh = shEl ? shEl.value.trim() || 'Worksheet' : 'Worksheet';
   document.getElementById('errId').textContent = '';
-  document.getElementById('errSheet').textContent = '';
   document.getElementById('inputId').classList.remove('error');
-  document.getElementById('inputSheet').classList.remove('error');
   id = extractSheetId(id);
   let ok = true;
   if (!id) { document.getElementById('errId').textContent = '⚠ กรุณาใส่ URL หรือ Sheet ID'; document.getElementById('inputId').classList.add('error'); ok = false; }
-  if (!sh) { document.getElementById('errSheet').textContent = '⚠ กรุณาใส่ชื่อ Sheet'; document.getElementById('inputSheet').classList.add('error'); ok = false; }
   return ok ? { id, sh } : null;
 }
 
