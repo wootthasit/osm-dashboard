@@ -546,7 +546,7 @@ async function loadFromSheets() {
 
     tambons=Object.keys(raw);
     document.getElementById('tabBar').innerHTML=
-      `<button class="tab-btn active" onclick="switchTab('all')">อสม. ทั้งหมด</button>`+
+      `<button class="tab-btn active" onclick="switchTab('all')">ทั้งหมด</button>`+
       tambons.map(t=>`<button class="tab-btn" onclick="switchTab('${t}')">${t}</button>`).join('');
 
     buildFilterChips();
@@ -588,7 +588,7 @@ function filterFromCard(filter) {
    ========================================================== */
 function switchTab(tab) {
   currentTab=tab;
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.textContent===(tab==='all'?'อสม. ทั้งหมด':tab)));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.textContent===(tab==='all'?'ทั้งหมด':tab)));
   renderAll();setTimeout(notifyHeight,300);
 }
 function setFilter(filter,el) {
