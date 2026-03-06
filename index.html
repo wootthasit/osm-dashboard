@@ -704,7 +704,7 @@ function renderSummary() {
     <div class="hero-card" onclick="filterFromCard('all_done')">
       <div class="hero-num">${allDone}</div>
       <div class="hero-badge">✅ สำเร็จทุกรายการ</div>
-      <div class="hero-sub">จาก อสม. ทั้งหมด ${total} คน</div>
+      <div class="hero-sub">${total>0?Math.round(allDone/total*100):0}% จาก อสม. ทั้งหมด ${total} คน</div>
     </div>
     <div class="stat-row">
       <div class="stat-mini s-blue" onclick="filterFromCard('partial')">
