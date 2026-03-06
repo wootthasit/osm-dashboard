@@ -637,6 +637,7 @@ function renderAll(){renderSummary();renderCards();}
 
 /* renderCardsOnly — ใช้เมื่อ search พิมพ์ ไม่แตะ mainContent ป้องกัน scroll กระโดด */
 function renderCardsOnly(){
+  const scrollY=window.scrollY;
   const data=getFilteredData();
   const tabs=currentTab==='all'?tambons:[currentTab];
   const sel=getSelectedMetrics();
@@ -672,6 +673,8 @@ function renderCardsOnly(){
     });
   }
   document.getElementById('cardContent').innerHTML=cardHtml;
+  updateCardMinHeight();
+  window.scrollTo(0,scrollY);
   setTimeout(notifyHeight,300);
 }
 
@@ -758,6 +761,7 @@ function getMedalTier(pNum){
 }
 
 function renderCards() {
+  const scrollY=window.scrollY;
   const data=getFilteredData();
   const tabs=currentTab==='all'?tambons:[currentTab];
   const sel=getSelectedMetrics();
@@ -839,6 +843,17 @@ function renderCards() {
     });
   }
   document.getElementById('cardContent').innerHTML=cardHtml;
+  updateCardMinHeight();
+  window.scrollTo(0,scrollY);
+}
+
+/* ==========================================================
+   CARD MIN-HEIGHT — ป้องกัน search bar เลื่อนลงเมื่อการ์ดน้อย
+   ========================================================== */
+function updateCardMinHeight(){
+  /* ใช้ min-height = 100vh เป็นค่าคงที่ เพื่อให้หน้าสูงพอเสมอ */
+  const el=document.getElementById('cardContent');
+  if(el) el.style.minHeight='100vh';
 }
 
 /* ==========================================================
