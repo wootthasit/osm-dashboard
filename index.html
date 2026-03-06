@@ -165,7 +165,7 @@
 
   /* SEARCH + FILTER BLOCK — ใต้ award banner เหนือการ์ด อสม. */
   .search-filter-block{padding:9px 0 0;}
-  .filter-chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;margin-bottom:9px;}
+  .filter-chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;margin-bottom:0;}
 
   /* AWARD BANNER — separate block */
   .award-banner{background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:10px 16px;margin:10px 0 0;font-size:13px;color:#6B5000;line-height:1.8;}
@@ -251,9 +251,17 @@
   <div class="summary-grid" id="summaryGrid"></div>
   <div class="note-bar" id="noteBox"></div>
   <div class="tab-bar" id="tabBar"></div>
-  <div class="content" id="mainContent">
+  <div class="content" id="mainContent" style="padding-bottom:9px;">
     <div class="empty"><div class="empty-icon">⏳</div>กำลังโหลดข้อมูล...</div>
   </div>
+  <!-- Search + Filter — static element ไม่ถูก re-render ป้องกัน focus หาย -->
+  <div id="searchFilterBar" style="display:none;padding:0 16px;">
+    <input class="search-box" type="text" id="searchInput"
+      placeholder="🔍 ค้นหาชื่อ หรือ นามสกุล"
+      oninput="searchQuery=this.value;renderCardsOnly();">
+    <div id="filterChipsRow" class="filter-chips-row"></div>
+  </div>
+  <div class="content" id="cardContent" style="padding-top:9px;"></div>
 </div>
 
 <script>
@@ -627,6 +635,46 @@ function getFilteredData() {
    ========================================================== */
 function renderAll(){renderSummary();renderCards();}
 
+/* renderCardsOnly — ใช้เมื่อ search พิมพ์ ไม่แตะ mainContent ป้องกัน scroll กระโดด */
+function renderCardsOnly(){
+  const data=getFilteredData();
+  const tabs=currentTab==='all'?tambons:[currentTab];
+  const sel=getSelectedMetrics();
+  let allFilteredRows=[];
+  tabs.forEach(tambon=>{
+    const rows=data[tambon]||[];
+    rows.forEach(r=>allFilteredRows.push({...r,tambon}));
+  });
+  allFilteredRows.sort((a,b)=>{
+    const aP=peopleNum(a.stats[1]),bP=peopleNum(b.stats[1]);
+    const aT=getMedalTier(aP).tier,bT=getMedalTier(bP).tier;
+    if(bT!==aT) return bT-aT; return bP-aP;
+  });
+  let cardHtml='';
+  if(!allFilteredRows.length){
+    cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
+  }else{
+    allFilteredRows.forEach(r=>{
+      const avatar=r.prefix==='นาย'?'👨':'👩';
+      const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
+      const pNum=peopleNum(r.stats[1]);
+      const medal=getMedalTier(pNum);
+      cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
+      if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
+      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div><div class="person-info"><div class="person-name">${r.prefix} ${r.name}</div><div class="person-num">ตำบล${r.tambon}</div><div class="status-row">`;
+      sel.forEach((m,i)=>{
+        const mi=activeMetrics[i];const done=isDone(r.stats[mi]);
+        let label=done?'สำเร็จ':'รอดำเนินการ';
+        if(mi===1&&done&&pNum>0) label=`${pNum} คน`;
+        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
+      });
+      cardHtml+=`</div></div></div>`;
+    });
+  }
+  document.getElementById('cardContent').innerHTML=cardHtml;
+  setTimeout(notifyHeight,300);
+}
+
 function renderSummary() {
   const all=getActiveData();const total=all.length;
   if(!total){document.getElementById('summaryGrid').innerHTML='';document.getElementById('noteBox').innerHTML='';return;}
@@ -749,36 +797,33 @@ function renderCards() {
     bannerHtml+=` :<br>🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span><br>🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
   }
   html+=`<div class="award-banner">${bannerHtml}</div>`;
+  document.getElementById('mainContent').innerHTML=html;
 
-  /* ===== Search + 4 Filter chips — อยู่ใต้ award banner เหนือการ์ด อสม. ===== */
-  const chipBtns = [
+  /* ===== Search + Filter (static — ไม่ re-render input เพื่อป้องกัน focus หาย) ===== */
+  const sfBar=document.getElementById('searchFilterBar');
+  if(sfBar) sfBar.style.display='block';
+  const chipBtns=[
     {key:'all',       label:'อสม. ทั้งหมด'},
     {key:'all_done',  label:'✅ สำเร็จทุกรายการ'},
     {key:'partial',   label:'🔄 สำเร็จบางส่วน'},
     {key:'none_done', label:'⏳ รอดำเนินการ'},
   ].map(f=>`<button class="chip${currentFilter===f.key?' active':''}" onclick="setFilterInline('${f.key}')">${f.label}</button>`).join('');
+  const fcRow=document.getElementById('filterChipsRow');
+  if(fcRow) fcRow.innerHTML=chipBtns;
 
-  html+=`<div class="search-filter-block">
-    <input class="search-box" type="text" id="searchInput"
-      placeholder="🔍 ค้นหาชื่อ หรือ นามสกุล"
-      value="${searchQuery.replace(/"/g,'&quot;')}"
-      oninput="searchQuery=this.value;renderAll();">
-    <div class="filter-chips-row">${chipBtns}</div>
-  </div>`;
-
+  /* ===== การ์ดรายชื่อ อสม. — render ใน cardContent แยกต่างหาก ===== */
+  let cardHtml='';
   if(!allFilteredRows.length){
-    html+=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
+    cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
   }else{
-    // count-text removed - info already in award banner
     allFilteredRows.forEach(r=>{
       const avatar=r.prefix==='นาย'?'👨':'👩';
       const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
       const pNum=peopleNum(r.stats[1]);
       const medal=getMedalTier(pNum);
-
-      html+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
-      if(medal.tier>0) html+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
-      html+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
+      cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
+      if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
+      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
         <div class="person-info">
           <div class="person-name">${r.prefix} ${r.name}</div>
           <div class="person-num">ตำบล${r.tambon}</div>
@@ -788,12 +833,12 @@ function renderCards() {
         const done=isDone(r.stats[mi]);
         let label=done?'สำเร็จ':'รอดำเนินการ';
         if(mi===1&&done&&pNum>0) label=`${pNum} คน`;
-        html+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
+        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
       });
-      html+=`</div></div></div>`;
+      cardHtml+=`</div></div></div>`;
     });
   }
-  document.getElementById('mainContent').innerHTML=html;
+  document.getElementById('cardContent').innerHTML=cardHtml;
 }
 
 /* ==========================================================
