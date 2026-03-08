@@ -19,7 +19,7 @@
   /* SETUP */
   .setup-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green) 0%,var(--green-deep) 100%);padding:24px;}
   .setup-card{background:white;border-radius:24px;padding:32px 28px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);}
-  .setup-logo{text-align:center;font-size:40px;margin-bottom:8px;}
+  .setup-logo{text-align:center;font-size:48px;margin-bottom:8px;}
   .setup-title{text-align:center;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:4px;}
   .setup-sub{text-align:center;font-size:13px;color:var(--gray);margin-bottom:24px;line-height:1.6;}
   .setup-card label.field-label{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:6px;display:block;}
@@ -57,10 +57,10 @@
 
   /* DASHBOARD */
   .dash-page{display:none;}
-  .hero{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 60%,var(--green-deep) 100%);padding:24px 20px 20px;text-align:center;color:white;position:relative;overflow:hidden;}
+  .hero{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 60%,var(--green-deep) 100%);padding:48px 20px 20px;text-align:center;color:white;position:relative;overflow:hidden;}
   .hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,0.06);border-radius:50%;}
   .hero::after{content:'';position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:rgba(255,255,255,0.05);border-radius:50%;}
-  .hero-icon{font-size:36px;margin-bottom:1px;margin-top:16px;}
+  .hero-icon{font-size:36px;margin-bottom:16px;margin-top:16px;}
   .hero h1{font-size:20px;font-weight:700;line-height:1.4;}
   .hero p{font-size:13px;opacity:0.85;margin-top:4px;}
   .hero-date{display:inline-block;background:rgba(255,255,255,0.15);border-radius:20px;padding:4px 14px;font-size:12px;margin-top:10px;}
@@ -68,18 +68,18 @@
   .btn-back:hover{background:rgba(255,255,255,0.3);}
 
   .summary-grid{padding:0;}
-  .summary-card{background:white;border-radius:16px;padding:12px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.15s;}
+  .summary-card{background:white;border-radius:16px;padding:14px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.15s;}
   .summary-card:active{transform:scale(0.97);}
   .summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
   .s-green::before{background:var(--green);} .s-blue::before{background:var(--blue);}
   .s-purple::before{background:var(--purple);} .s-orange::before{background:var(--orange);}
-  .big-num{font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;}
+  .big-num{font-size:30px;font-weight:700;line-height:1;margin-bottom:4px;}
   .s-green .big-num{color:var(--green);} .s-blue .big-num{color:var(--blue);}
   .s-purple .big-num{color:var(--purple);} .s-orange .big-num{color:var(--orange);}
   .summary-card .label{font-size:11px;color:var(--gray);line-height:1.4;}
 
-  .note-bar{display:none;background:#fffde7;border-left:4px solid #ffc107;border-radius:0 12px 12px 0;padding:10px 16px;margin:12px 16px 0;font-size:13px;color:#6b5000;line-height:1.6;}
-  .tab-bar{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px 0;}
+  /* note-bar removed — info consolidated in award banner */
+  .tab-bar{display:flex;gap:8px;padding:14px 16px 0;overflow-x:auto;}
   .tab-btn{flex-shrink:0;padding:9px 14px;border:none;border-radius:12px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;background:white;color:var(--gray);box-shadow:var(--shadow);white-space:nowrap;}
   .tab-btn.active{background:var(--green);color:white;transform:translateY(-1px);}
   .search-wrap{padding:10px 16px 0;}
@@ -91,7 +91,7 @@
   .content{padding:12px 16px 40px;}
 
   /* PROGRESS */
-  .progress-section{background:white;border-radius:16px;padding:12px;margin:0 0 10px;box-shadow:var(--shadow);}
+  .progress-section{background:white;border-radius:16px;padding:14px;margin:0 0 10px;box-shadow:var(--shadow);}
   .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
   .progress-title{font-size:15px;font-weight:700;}
   .progress-count{font-size:12px;color:var(--gray);}
@@ -132,10 +132,10 @@
   @media(max-width:380px){.big-num{font-size:24px!important;}}
 
   /* HERO CARD (สำเร็จทุกรายการ) */
-  .hero-card{background:white;border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.15s;}
+  .hero-card{background:white;border-radius:16px;padding:16px 16px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.15s;}
   .hero-card:active{transform:scale(0.97);}
   .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--green);}
-  .hero-num{font-size:40px;font-weight:700;color:var(--green);line-height:1;}
+  .hero-num{font-size:48px;font-weight:700;color:var(--green);line-height:1;}
   .hero-badge{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;color:var(--green);margin-top:4px;}
   .hero-sub{font-size:12px;color:var(--gray);margin-top:2px;}
 
@@ -152,7 +152,7 @@
   .stat-label{font-size:11px;color:var(--gray);line-height:1.4;margin-top:4px;}
 
   /* POPULATION CARD */
-  .pop-card{background:white;border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;}
+  .pop-card{background:white;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;}
   .pop-icon-wrap{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#e0f2fe,#bae6fd);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
   .pop-info{flex:1;}
   .pop-num{font-size:26px;font-weight:700;color:var(--dark);line-height:1;}
@@ -163,19 +163,14 @@
   .mini-donut svg{width:100%;height:100%;transform:rotate(-90deg);}
   .mini-donut-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16px;font-weight:700;line-height:1;}
 
-  /* SEARCH + FILTER BLOCK — ใต้ award banner เหนือการ์ด อสม. */
-  .search-filter-block{padding:9px 0 0;}
-  .filter-chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;margin-bottom:0;}
-
   /* AWARD BANNER — separate block */
-  .award-banner{background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:10px 16px;margin:10px 0 0;font-size:13px;color:#6B5000;line-height:1.8;}
+  .award-banner{background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:10px 16px;margin:10px 16px 0;font-size:13px;color:#6B5000;line-height:1.8;}
   .award-banner strong{color:#5D4037;}
 
   /* MEDAL BADGES — corner badge */
-  .rank-badge{position:absolute;top:-1px;right:10px;font-size:10px;font-weight:700;padding:4px 12px;border-radius:0 0 10px 10px;}
+  .rank-badge{position:absolute;top:0;right:0;font-size:10px;font-weight:700;padding:3px 10px;border-radius:0 14px 0 10px;}
   .rank-badge.trophy{background:linear-gradient(135deg,#FFD700,#FFA500);color:#7a4000;}
   .rank-badge.gold{background:linear-gradient(135deg,#FFD700,#DAA520);color:#7a5000;}
-  .person-card.has-badge{overflow:visible;padding-top:28px;}
 
   /* GRADIENT PROGRESS BARS */
   .fill-gold{background:linear-gradient(90deg,#00c47d,#DAA520);}
@@ -196,15 +191,10 @@
     <div class="err-msg" id="errId"></div>
     <div class="hint">Copy URL จากช่อง browser ของ Google Sheets แล้ววางได้เลย</div>
 
-    <div style="margin-bottom:14px;">
-      <span onclick="toggleAdvanced()" style="font-size:12px;color:var(--gray);cursor:pointer;user-select:none;">⚙ ตั้งค่าขั้นสูง <span id="advArrow">▸</span></span>
-      <div id="advancedSection" style="display:none;margin-top:10px;">
-        <label class="field-label">📋 ชื่อ Sheet</label>
-        <input id="inputSheet" type="text" placeholder="เช่น Worksheet" value="Worksheet">
-        <div class="err-msg" id="errSheet"></div>
-        <div class="hint">ใช้เมื่อมีหลาย Sheet — ดูชื่อได้จากแถบด้านล่างของ Google Sheets<br>⚠ ถ้าไม่แน่ใจ ไม่ต้องแก้ไข ระบบจะใช้ Sheet แรกอัตโนมัติ</div>
-      </div>
-    </div>
+    <label class="field-label">📋 ชื่อ Sheet</label>
+    <input id="inputSheet" type="text" placeholder="เช่น Worksheet" value="Worksheet">
+    <div class="err-msg" id="errSheet"></div>
+    <div class="hint">ดูชื่อได้จากแถบด้านล่างของ Google Sheets</div>
 
     <!-- Checkbox เลือกผลงาน -->
     <div class="cb-section">
@@ -254,24 +244,20 @@
     </div>
   </div>
   <div class="summary-grid" id="summaryGrid"></div>
-  <div class="note-bar" id="noteBox"></div>
+  
   <div class="tab-bar" id="tabBar"></div>
-  <div class="content" id="mainContent" style="padding-bottom:9px;">
+  <div class="search-wrap">
+    <input class="search-box" type="text" id="searchInput" placeholder="🔍 ค้นหาชื่อ หรือ นามสกุล" oninput="renderAll()">
+  </div>
+  <div class="filter-bar" id="filterBar"></div>
+  <div class="content" id="mainContent">
     <div class="empty"><div class="empty-icon">⏳</div>กำลังโหลดข้อมูล...</div>
   </div>
-  <!-- Search + Filter — static element ไม่ถูก re-render ป้องกัน focus หาย -->
-  <div id="searchFilterBar" style="display:none;padding:0 16px;">
-    <input class="search-box" type="text" id="searchInput"
-      placeholder="🔍 ค้นหาชื่อ หรือ นามสกุล"
-      oninput="searchQuery=this.value;renderCardsOnly();">
-    <div id="filterChipsRow" class="filter-chips-row"></div>
-  </div>
-  <div class="content" id="cardContent" style="padding-top:9px;"></div>
 </div>
 
 <script>
 /* ==========================================================
-   CONFIG: 6 สถานะอสม. ทั้งหมด
+   CONFIG: 6 สถานะทั้งหมด
    ========================================================== */
 const METRICS = [
   { key:'self',    col:8,  name:'คัดกรองตนเอง',    color:'var(--green)',  fill:'fill-green',  defaultOn:true },
@@ -283,6 +269,9 @@ const METRICS = [
 ];
 const MEDAL_GOLD = 50;    // 50-99: 🥇 เหรียญทอง
 const TROPHY_GOLD = 100;  // 100+: 🏆 ถ้วยทอง
+
+/* ===== TRACKING CONFIG ===== */
+const LOG_URL = ''; // <<< ใส่ URL ของ Google Apps Script Web App ที่นี่
 
 let SHEET_ID = '', SHEET_NAME = 'Worksheet';
 let activeMetrics = [0, 1]; // index ของ METRICS ที่เลือกแสดง
@@ -337,23 +326,17 @@ function extractSheetId(input) {
   const m = input.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
   return m ? m[1] : input;
 }
-function toggleAdvanced() {
-  const sec = document.getElementById('advancedSection');
-  const arrow = document.getElementById('advArrow');
-  const isOpen = sec.style.display !== 'none';
-  sec.style.display = isOpen ? 'none' : 'block';
-  arrow.textContent = isOpen ? '▸' : '▾';
-}
-
 function validateInputs() {
   let id = document.getElementById('inputId').value.trim();
-  const shEl = document.getElementById('inputSheet');
-  const sh = shEl ? shEl.value.trim() || 'Worksheet' : 'Worksheet';
+  const sh = document.getElementById('inputSheet').value.trim();
   document.getElementById('errId').textContent = '';
+  document.getElementById('errSheet').textContent = '';
   document.getElementById('inputId').classList.remove('error');
+  document.getElementById('inputSheet').classList.remove('error');
   id = extractSheetId(id);
   let ok = true;
   if (!id) { document.getElementById('errId').textContent = '⚠ กรุณาใส่ URL หรือ Sheet ID'; document.getElementById('inputId').classList.add('error'); ok = false; }
+  if (!sh) { document.getElementById('errSheet').textContent = '⚠ กรุณาใส่ชื่อ Sheet'; document.getElementById('inputSheet').classList.add('error'); ok = false; }
   return ok ? { id, sh } : null;
 }
 
@@ -484,6 +467,17 @@ async function fetchViaFetch(id, sheet) {
   return JSON.parse(t.replace(/^[^\(]+\(/,'').replace(/\);?\s*$/,''));
 }
 
+/* ===== TRACKING: ส่ง log ไป Google Apps Script ===== */
+let _logSent = false;
+function sendTrackingLog(hospitalName) {
+  if (_logSent || !LOG_URL) return;
+  _logSent = true;
+  try {
+    const data = { name: hospitalName || 'ไม่ทราบชื่อหน่วยงาน', time: new Date().toISOString() };
+    fetch(LOG_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(data) });
+  } catch(e) { /* silent fail */ }
+}
+
 async function loadFromSheets() {
   document.getElementById('mainContent').innerHTML='<div class="empty"><div class="empty-icon">⏳</div>กำลังโหลดข้อมูล...</div>';
   let json = null;
@@ -512,7 +506,7 @@ async function loadFromSheets() {
 
     /* ชื่อหน่วยงาน */
     const hMatch=colLabels.match(/:\s+(.+?)\s+ตำบล/);
-    if(hMatch){document.getElementById('hospitalName').textContent=hMatch[1].trim();}
+    if(hMatch){document.getElementById('hospitalName').textContent=hMatch[1].trim(); sendTrackingLog(hMatch[1].trim());}
     else{for(let i=0;i<Math.min(tableRows.length,3);i++){const cells=tableRows[i].c||[];for(let j=0;j<cells.length;j++){const v=cellVal(cells[j]);const hm=v.match(/:\s+(.+?)\s+ตำบล/);if(hm){document.getElementById('hospitalName').textContent=hm[1].trim();break;}const hm2=v.match(/(?:โรงพยาบาล|รพ\.สต\.|รพสต|สสอ\.|สสจ\.)[\S\s]*?(?=\s+(?:ตำบล|อำเภอ|จำนวน))/);if(hm2){document.getElementById('hospitalName').textContent=hm2[0].trim();break;}}}}
 
     /* วันที่ */
@@ -570,28 +564,31 @@ async function loadFromSheets() {
 }
 
 /* ==========================================================
-   FILTER CHIPS — 4 ปุ่มคงที่ (render inline ใน renderCards)
+   FILTER CHIPS — สร้างตาม metrics ที่เลือก
    ========================================================== */
-let searchQuery = '';
-function buildFilterChips() { /* ไม่ใช้แล้ว — chips สร้างใน renderCards */ }
-function getFilterChipsHtml(innerOnly) {
-  const filters = [
-    { key:'all',      label:'อสม. ทั้งหมด' },
-    { key:'all_done', label:'&#x2705; สำเร็จทุกรายการ' },
-    { key:'partial',  label:'&#x1F504; สำเร็จบางส่วน' },
-    { key:'none_done',label:'&#x23F3; รอดำเนินการ' },
-  ];
-  const btns = filters.map(f=>`<button class="chip${currentFilter===f.key?' active':''}" onclick="setFilterInline('${f.key}')">${f.label}</button>`).join('');
-  return innerOnly ? btns : `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:0;">${btns}</div>`;
-}
-function setFilterInline(filter) {
-  currentFilter = filter;
-  renderAll(); setTimeout(notifyHeight, 300);
+function buildFilterChips() {
+  const sel = getSelectedMetrics();
+  let html = '<button class="chip active" onclick="setFilter(\'all\',this)">ทั้งหมด</button>';
+  if (sel.length >= 2) {
+    html += '<button class="chip" onclick="setFilter(\'all_done\',this)">✅ สำเร็จทุกรายการ</button>';
+    html += '<button class="chip" onclick="setFilter(\'partial\',this)">🔶 สำเร็จบางส่วน</button>';
+  }
+  sel.forEach((m, i) => {
+    html += `<button class="chip" onclick="setFilter('done_${activeMetrics[i]}',this)">✓ ${m.name}</button>`;
+  });
+  html += '<button class="chip" onclick="setFilter(\'none_done\',this)">⏳ รอดำเนินการ</button>';
+  document.getElementById('filterBar').innerHTML = html;
 }
 
 function filterFromCard(filter) {
   currentFilter = filter;
-  renderAll(); setTimeout(notifyHeight, 300);
+  renderAll();
+  /* scroll ลงไปที่ปุ่มกรองด้านล่างอัตโนมัติ */
+  setTimeout(() => {
+    const el = document.getElementById('filterChipsRow');
+    if(el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 150);
+  setTimeout(notifyHeight, 300);
 }
 
 /* ==========================================================
@@ -604,6 +601,8 @@ function switchTab(tab) {
 }
 function setFilter(filter,el) {
   currentFilter=filter;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
   renderAll();setTimeout(notifyHeight,300);
 }
 
@@ -629,7 +628,7 @@ function matchFilter(person) {
 }
 
 function getFilteredData() {
-  const q=searchQuery.trim().replace(/\s/g,'');
+  const q=document.getElementById('searchInput').value.trim().replace(/\s/g,'');
   const result={};
   (currentTab==='all'?tambons:[currentTab]).forEach(t=>{
     const rows=(raw[t]||[]).filter(r=>{
@@ -646,52 +645,9 @@ function getFilteredData() {
    ========================================================== */
 function renderAll(){renderSummary();renderCards();}
 
-/* renderCardsOnly — ใช้เมื่อ search พิมพ์ ไม่แตะ mainContent ป้องกัน scroll กระโดด */
-function renderCardsOnly(){
-  const scrollY=window.scrollY;
-  const data=getFilteredData();
-  const tabs=currentTab==='all'?tambons:[currentTab];
-  const sel=getSelectedMetrics();
-  let allFilteredRows=[];
-  tabs.forEach(tambon=>{
-    const rows=data[tambon]||[];
-    rows.forEach(r=>allFilteredRows.push({...r,tambon}));
-  });
-  allFilteredRows.sort((a,b)=>{
-    const aP=peopleNum(a.stats[1]),bP=peopleNum(b.stats[1]);
-    const aT=getMedalTier(aP).tier,bT=getMedalTier(bP).tier;
-    if(bT!==aT) return bT-aT; return bP-aP;
-  });
-  let cardHtml='';
-  if(!allFilteredRows.length){
-    cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
-  }else{
-    allFilteredRows.forEach(r=>{
-      const avatar=r.prefix==='นาย'?'👨':'👩';
-      const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
-      const pNum=peopleNum(r.stats[1]);
-      const medal=getMedalTier(pNum);
-      cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
-      if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
-      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div><div class="person-info"><div class="person-name">${r.prefix} ${r.name}</div><div class="person-num">ตำบล${r.tambon}</div><div class="status-row">`;
-      sel.forEach((m,i)=>{
-        const mi=activeMetrics[i];const done=isDone(r.stats[mi]);
-        let label=done?'สำเร็จ':'รอดำเนินการ';
-        if(mi===1&&done&&pNum>0) label=`${pNum} คน`;
-        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
-      });
-      cardHtml+=`</div></div></div>`;
-    });
-  }
-  document.getElementById('cardContent').innerHTML=cardHtml;
-  updateCardMinHeight();
-  window.scrollTo(0,scrollY);
-  setTimeout(notifyHeight,300);
-}
-
 function renderSummary() {
   const all=getActiveData();const total=all.length;
-  if(!total){document.getElementById('summaryGrid').innerHTML='';document.getElementById('noteBox').innerHTML='';return;}
+  if(!total){document.getElementById('summaryGrid').innerHTML='';/* noteBox removed */return;}
   const sel=getSelectedMetrics();
   const tabLabel=currentTab==='all'?'ทุกตำบล':`ตำบล${currentTab}`;
 
@@ -700,16 +656,16 @@ function renderSummary() {
   const partial=total-allDone-noneDone;
 
   let html=`
-  <div style="padding:12px 16px 0;">
+  <div style="padding:16px 16px 0;">
     <div class="hero-card" onclick="filterFromCard('all_done')">
       <div class="hero-num">${allDone}</div>
       <div class="hero-badge">✅ สำเร็จทุกรายการ</div>
-      <div class="hero-sub">${total>0?Math.round(allDone/total*100):0}% จาก อสม. ทั้งหมด ${total} คน</div>
+      <div class="hero-sub">จาก อสม. ทั้งหมด ${total} คน</div>
     </div>
     <div class="stat-row">
       <div class="stat-mini s-blue" onclick="filterFromCard('partial')">
         <div class="stat-num" style="color:var(--blue);">${partial}</div>
-        <div class="stat-label">🔄 สำเร็จบางส่วน</div>
+        <div class="stat-label">◆ บางส่วน</div>
       </div>
       <div class="stat-mini s-orange" onclick="filterFromCard('none_done')">
         <div class="stat-num" style="color:var(--orange);">${noneDone}</div>
@@ -717,7 +673,7 @@ function renderSummary() {
       </div>
       <div class="stat-mini s-dark" onclick="filterFromCard('all')">
         <div class="stat-num" style="color:var(--dark);">${total}</div>
-        <div class="stat-label">👥 อสม. ทั้งหมด</div>
+        <div class="stat-label">👥 ทั้งหมด</div>
       </div>
     </div>
   </div>`;
@@ -725,7 +681,7 @@ function renderSummary() {
   document.getElementById('summaryGrid').innerHTML=html;
 
   /* Note bar — only total count, changes with tambon */
-  document.getElementById('noteBox').innerHTML=`📊 อสม. ${tabLabel} <strong>${total}</strong> คน`;
+  /* noteBox removed */
 }
 
 function buildProgressHtml(title, allRows, sel) {
@@ -751,8 +707,8 @@ function buildProgressHtml(title, allRows, sel) {
         <div class="mini-donut-pct" style="color:${m.color};">${pct}%</div>
       </div>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--dark);">${m.name}</div>
-        <div style="font-size:12px;color:var(--gray);margin-bottom:5px;">${done}/${total} คน (${pct}%)</div>
+        <div style="font-size:15px;font-weight:700;color:var(--dark);">${done}/${total} คน (${pct}%)</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:5px;">${m.name}</div>
         <div class="progress-bar-wrap"><div class="progress-fill ${fillClass}" style="width:${Math.max(pct,2)}%"></div></div>
       </div>
     </div>`;
@@ -772,7 +728,6 @@ function getMedalTier(pNum){
 }
 
 function renderCards() {
-  const scrollY=window.scrollY;
   const data=getFilteredData();
   const tabs=currentTab==='all'?tambons:[currentTab];
   const sel=getSelectedMetrics();
@@ -809,36 +764,23 @@ function renderCards() {
 
   let bannerHtml=`📊 อสม. ${tabLabel} <strong>${total}</strong> คน`;
   if(trophyCount>0||medalCount>0){
-    bannerHtml+=` :<br>🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span><br>🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
+    bannerHtml+=` : 🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span> · 🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
   }
   html+=`<div class="award-banner">${bannerHtml}</div>`;
-  document.getElementById('mainContent').innerHTML=html;
 
-  /* ===== Search + Filter (static — ไม่ re-render input เพื่อป้องกัน focus หาย) ===== */
-  const sfBar=document.getElementById('searchFilterBar');
-  if(sfBar) sfBar.style.display='block';
-  const chipBtns=[
-    {key:'all',       label:'อสม. ทั้งหมด'},
-    {key:'all_done',  label:'✅ สำเร็จทุกรายการ'},
-    {key:'partial',   label:'🔄 สำเร็จบางส่วน'},
-    {key:'none_done', label:'⏳ รอดำเนินการ'},
-  ].map(f=>`<button class="chip${currentFilter===f.key?' active':''}" onclick="setFilterInline('${f.key}')">${f.label}</button>`).join('');
-  const fcRow=document.getElementById('filterChipsRow');
-  if(fcRow) fcRow.innerHTML=chipBtns;
-
-  /* ===== การ์ดรายชื่อ อสม. — render ใน cardContent แยกต่างหาก ===== */
-  let cardHtml='';
   if(!allFilteredRows.length){
-    cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
+    html+=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
   }else{
+    // count-text removed - info already in award banner
     allFilteredRows.forEach(r=>{
       const avatar=r.prefix==='นาย'?'👨':'👩';
       const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
       const pNum=peopleNum(r.stats[1]);
       const medal=getMedalTier(pNum);
-      cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
-      if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
-      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
+
+      html+=`<div class="person-card">`;
+      if(medal.tier>0) html+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
+      html+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
         <div class="person-info">
           <div class="person-name">${r.prefix} ${r.name}</div>
           <div class="person-num">ตำบล${r.tambon}</div>
@@ -848,23 +790,12 @@ function renderCards() {
         const done=isDone(r.stats[mi]);
         let label=done?'สำเร็จ':'รอดำเนินการ';
         if(mi===1&&done&&pNum>0) label=`${pNum} คน`;
-        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
+        html+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
       });
-      cardHtml+=`</div></div></div>`;
+      html+=`</div></div></div>`;
     });
   }
-  document.getElementById('cardContent').innerHTML=cardHtml;
-  updateCardMinHeight();
-  window.scrollTo(0,scrollY);
-}
-
-/* ==========================================================
-   CARD MIN-HEIGHT — ป้องกัน search bar เลื่อนลงเมื่อการ์ดน้อย
-   ========================================================== */
-function updateCardMinHeight(){
-  /* ใช้ min-height = 100vh เป็นค่าคงที่ เพื่อให้หน้าสูงพอเสมอ */
-  const el=document.getElementById('cardContent');
-  if(el) el.style.minHeight='100vh';
+  document.getElementById('mainContent').innerHTML=html;
 }
 
 /* ==========================================================
