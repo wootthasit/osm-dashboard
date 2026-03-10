@@ -137,7 +137,7 @@
   .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--green);}
   .hero-num{font-size:40px;font-weight:700;color:var(--green);line-height:1;}
   .hero-badge{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;color:var(--green);margin-top:4px;}
-  .hero-sub{font-size:12px;color:var(--gray);margin-top:2px;}
+  .hero-sub{font-size:14px;color:var(--green-dark);margin-top:4px;font-weight:600;}
 
   /* SMALL STAT CARDS — row of 3 */
   .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;}
@@ -282,10 +282,13 @@ const METRICS = [
   { key:'ncds',    col:13, name:'รณรงค์ NCDs',      color:'var(--orange)', fill:'fill-orange',  defaultOn:false },
 ];
 const MEDAL_GOLD = 50;    // 50-99: 🥇 เหรียญทอง
+
+/* ===== TRACKING CONFIG ===== */
+const LOG_URL = ''; // <<< ใส่ URL ของ Google Apps Script Web App ที่นี่
 const TROPHY_GOLD = 100;  // 100+: 🏆 ถ้วยทอง
 
 let SHEET_ID = '', SHEET_NAME = 'Worksheet';
-let activeMetrics = [0, 1]; // index ของ METRICS ที่เลือกแสดง
+let activeMetrics = [1, 2, 3, 4, 5]; // default: สถานะ 2-6 (ไม่รวมคัดกรองตนเอง)
 let raw = {}, tambons = [], currentTab = 'all', currentFilter = 'all';
 
 /* ==========================================================
@@ -484,6 +487,17 @@ async function fetchViaFetch(id, sheet) {
   return JSON.parse(t.replace(/^[^\(]+\(/,'').replace(/\);?\s*$/,''));
 }
 
+/* ===== TRACKING: ส่ง log ไป Google Apps Script ===== */
+let _logSent = false;
+function sendTrackingLog(hospitalName) {
+  if (_logSent || !LOG_URL) return;
+  _logSent = true;
+  try {
+    const data = { name: hospitalName || 'ไม่ทราบชื่อหน่วยงาน', time: new Date().toISOString() };
+    fetch(LOG_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(data) });
+  } catch(e) { /* silent fail */ }
+}
+
 async function loadFromSheets() {
   document.getElementById('mainContent').innerHTML='<div class="empty"><div class="empty-icon">⏳</div>กำลังโหลดข้อมูล...</div>';
   let json = null;
@@ -512,7 +526,7 @@ async function loadFromSheets() {
 
     /* ชื่อหน่วยงาน */
     const hMatch=colLabels.match(/:\s+(.+?)\s+ตำบล/);
-    if(hMatch){document.getElementById('hospitalName').textContent=hMatch[1].trim();}
+    if(hMatch){document.getElementById('hospitalName').textContent=hMatch[1].trim(); sendTrackingLog(hMatch[1].trim());}
     else{for(let i=0;i<Math.min(tableRows.length,3);i++){const cells=tableRows[i].c||[];for(let j=0;j<cells.length;j++){const v=cellVal(cells[j]);const hm=v.match(/:\s+(.+?)\s+ตำบล/);if(hm){document.getElementById('hospitalName').textContent=hm[1].trim();break;}const hm2=v.match(/(?:โรงพยาบาล|รพ\.สต\.|รพสต|สสอ\.|สสจ\.)[\S\s]*?(?=\s+(?:ตำบล|อำเภอ|จำนวน))/);if(hm2){document.getElementById('hospitalName').textContent=hm2[0].trim();break;}}}}
 
     /* วันที่ */
@@ -591,7 +605,13 @@ function setFilterInline(filter) {
 
 function filterFromCard(filter) {
   currentFilter = filter;
-  renderAll(); setTimeout(notifyHeight, 300);
+  renderAll();
+  /* scroll ลงไปที่ปุ่มกรองด้านล่างอัตโนมัติ */
+  setTimeout(() => {
+    const el = document.getElementById('filterChipsRow');
+    if(el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 150);
+  setTimeout(notifyHeight, 300);
 }
 
 /* ==========================================================
@@ -702,7 +722,7 @@ function renderSummary() {
   let html=`
   <div style="padding:12px 16px 0;">
     <div class="hero-card" onclick="filterFromCard('all_done')">
-      <div class="hero-num">${allDone}</div>
+      <div class="hero-num">${allDone} <span style="font-size:18px;color:var(--gray);font-weight:600;">คน</span></div>
       <div class="hero-badge">✅ สำเร็จทุกรายการ</div>
       <div class="hero-sub">${total>0?Math.round(allDone/total*100):0}% จาก อสม. ทั้งหมด ${total} คน</div>
     </div>
@@ -878,7 +898,7 @@ if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>notifyHeight()).ob
    ========================================================== */
 (function init(){
   const p=getHashParams();
-  if(p.show){activeMetrics=p.show.split(',').map(Number).filter(n=>!isNaN(n)&&n>=0&&n<METRICS.length);if(!activeMetrics.length)activeMetrics=[0,1];}
+  if(p.show){activeMetrics=p.show.split(',').map(Number).filter(n=>!isNaN(n)&&n>=0&&n<METRICS.length);if(!activeMetrics.length)activeMetrics=[1,2,3,4,5];}
 
   /* อ่าน localStorage เป็น fallback */
   let savedId='', savedSheet='Worksheet';
@@ -912,7 +932,7 @@ if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>notifyHeight()).ob
 
 window.addEventListener('hashchange',()=>{
   const p=getHashParams();
-  if(p.show){activeMetrics=p.show.split(',').map(Number).filter(n=>!isNaN(n)&&n>=0&&n<METRICS.length);if(!activeMetrics.length)activeMetrics=[0,1];}
+  if(p.show){activeMetrics=p.show.split(',').map(Number).filter(n=>!isNaN(n)&&n>=0&&n<METRICS.length);if(!activeMetrics.length)activeMetrics=[1,2,3,4,5];}
   if(p.id){SHEET_ID=p.id;SHEET_NAME=p.sheet||'Worksheet';showDash();loadFromSheets();}
   else{showSetup();}
 });
