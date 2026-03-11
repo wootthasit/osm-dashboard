@@ -137,7 +137,7 @@
   .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--green);}
   .hero-num{font-size:40px;font-weight:700;color:var(--green);line-height:1;}
   .hero-badge{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;color:var(--green);margin-top:4px;}
-  .hero-sub{font-size:14px;color:var(--green-dark);margin-top:4px;font-weight:600;}
+  .hero-sub{font-size:14px;color:var(--green);margin-top:4px;font-weight:600;}
 
   /* SMALL STAT CARDS — row of 3 */
   .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;}
@@ -227,7 +227,7 @@
       <p>📌 <strong>ก่อนใช้งาน:</strong> ต้องแชร์ Google Sheets เป็น "ทุกคนที่มีลิงค์" → ผู้ดู</p>
       <p>💾 <strong>ลิงค์ที่ได้</strong> สามารถ bookmark หรือแชร์ให้ อสม. เปิดดูได้ทันที</p>
       <p>🔄 <strong>ข้อมูลจะอัปเดตอัตโนมัติ</strong> ทุกครั้งที่เปิดลิงค์</p>
-      <p style="margin-top:4px;border-top:1px solid #e8ecf0;padding-top:6px;text-align:center;">© 2569 วุฒสิต จารุกลัส | รพ.สต.ร่มโพธิ์</p>
+      <p style="margin-top:4px;border-top:2px solid #cbd5e1;padding-top:6px;text-align:center;">© 2569 วุฒสิต จารุกลัส | รพ.สต.ร่มโพธิ์ อ.เมือง จ.สมุทรปราการ</p>
     </div>
   </div>
 </div>
@@ -722,9 +722,9 @@ function renderSummary() {
   let html=`
   <div style="padding:12px 16px 0;">
     <div class="hero-card" onclick="filterFromCard('all_done')">
-      <div class="hero-num">${allDone} <span style="font-size:18px;color:var(--gray);font-weight:600;">คน</span></div>
+      <div class="hero-num">${allDone}<span style="font-size:18px;color:var(--green);font-weight:600;margin-left:4px;">คน</span></div>
       <div class="hero-badge">✅ สำเร็จทุกรายการ</div>
-      <div class="hero-sub">${total>0?Math.round(allDone/total*100):0}% จาก อสม. ทั้งหมด ${total} คน</div>
+      <div class="hero-sub">🎯 ${total>0?Math.round(allDone/total*100):0}% จาก อสม. ทั้งหมด ${total} คน</div>
     </div>
     <div class="stat-row">
       <div class="stat-mini s-blue" onclick="filterFromCard('partial')">
@@ -745,7 +745,7 @@ function renderSummary() {
   document.getElementById('summaryGrid').innerHTML=html;
 
   /* Note bar — only total count, changes with tambon */
-  document.getElementById('noteBox').innerHTML=`📊 อสม. ${tabLabel} <strong>${total}</strong> คน`;
+  document.getElementById('noteBox').innerHTML=`🏥 อสม. ${tabLabel} <strong>${total}</strong> คน`;
 }
 
 function buildProgressHtml(title, allRows, sel) {
@@ -827,7 +827,7 @@ function renderCards() {
   const trophyCount=allData.filter(r=>peopleNum(r.stats[1])>=TROPHY_GOLD).length;
   const medalCount=allData.filter(r=>{const n=peopleNum(r.stats[1]);return n>=MEDAL_GOLD&&n<TROPHY_GOLD;}).length;
 
-  let bannerHtml=`📊 อสม. ${tabLabel} <strong>${total}</strong> คน`;
+  let bannerHtml=`🏥 อสม. ${tabLabel} <strong>${total}</strong> คน`;
   if(trophyCount>0||medalCount>0){
     bannerHtml+=` :<br>🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span><br>🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
   }
