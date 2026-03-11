@@ -444,7 +444,7 @@ function findDateFromCells(tableRows) {
         const day=parseInt(m[1]),month=thaiMonths[m[2]],year=parseInt(m[3])-543;
         if (!isNaN(day)&&month!==undefined&&!isNaN(year)) {
           const tm=v.match(/เวลา\s*(\d{1,2}):(\d{2}):?(\d{2})?\s*น?\./);
-          let ts=''; if(tm) ts=` เวลา ${tm[1]}:${tm[2]}${tm[3]?':'+tm[3]:''} น.`;
+          let ts=''; if(tm) ts=` เวลา ${tm[1]}:${tm[2]} น.`;
           return {day,month,year,timeStr:ts};
         }
       }
@@ -453,7 +453,7 @@ function findDateFromCells(tableRows) {
         const day=parseInt(mf[1]),month=thaiMonthsFull[mf[2]],year=parseInt(mf[3])-543;
         if (!isNaN(day)&&month!==undefined&&!isNaN(year)) {
           const tm=v.match(/เวลา\s*(\d{1,2}):(\d{2}):?(\d{2})?\s*น?\./);
-          let ts=''; if(tm) ts=` เวลา ${tm[1]}:${tm[2]}${tm[3]?':'+tm[3]:''} น.`;
+          let ts=''; if(tm) ts=` เวลา ${tm[1]}:${tm[2]} น.`;
           return {day,month,year,timeStr:ts};
         }
       }
@@ -478,7 +478,7 @@ function findDateFromText(text) {
     const day=parseInt(m[1]),month=thaiMonths[m[2]],year=parseInt(m[3])-543;
     if(!isNaN(day)&&month!==undefined&&!isNaN(year)){
       const tm=text.match(/เวลา\s*(\d{1,2}):(\d{2}):?(\d{2})?\s*น?\./);
-      let ts=''; if(tm) ts=` เวลา ${tm[1]}:${tm[2]}${tm[3]?':'+tm[3]:''} น.`;
+      let ts=''; if(tm) ts=` เวลา ${tm[1]}:${tm[2]} น.`;
       return {day,month,year,timeStr:ts};
     }
   }
@@ -687,6 +687,21 @@ function getFilteredData() {
 /* ==========================================================
    RENDER
    ========================================================== */
+/* ===== Rank Map — อันดับคงที่ไม่เปลี่ยนตามตัวกรอง ===== */
+function getRankMap() {
+  const tabs=currentTab==='all'?tambons:[currentTab];
+  const allRows=[];
+  tabs.forEach(t=>(raw[t]||[]).forEach(r=>allRows.push({...r,tambon:t})));
+  allRows.sort((a,b)=>{
+    const aP=peopleNum(a.stats[1]),bP=peopleNum(b.stats[1]);
+    const aT=getMedalTier(aP).tier,bT=getMedalTier(bP).tier;
+    if(bT!==aT) return bT-aT; return bP-aP;
+  });
+  const map={};
+  allRows.forEach((r,i)=>{ map[r.name+'|'+r.tambon]=i+1; });
+  return map;
+}
+
 function renderAll(){renderSummary();renderCards();}
 
 /* renderCardsOnly — ใช้เมื่อ search พิมพ์ ไม่แตะ mainContent ป้องกัน scroll กระโดด */
@@ -695,6 +710,7 @@ function renderCardsOnly(){
   const data=getFilteredData();
   const tabs=currentTab==='all'?tambons:[currentTab];
   const sel=getSelectedMetrics();
+  const rankMap=getRankMap();
   let allFilteredRows=[];
   tabs.forEach(tambon=>{
     const rows=data[tambon]||[];
@@ -710,7 +726,7 @@ function renderCardsOnly(){
     cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
   }else{
     allFilteredRows.forEach((r,idx)=>{
-      const rank=idx+1;
+      const rank=rankMap[r.name+'|'+r.tambon]||idx+1;
       const avatar=r.prefix==='นาย'?'👨':'👩';
       const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
       const pNum=peopleNum(r.stats[1]);
@@ -872,6 +888,7 @@ function renderCards() {
     if(bT!==aT) return bT-aT;
     return bP-aP;
   });
+  const rankMap=getRankMap();
 
   /* Award summary cards */
   const allData=tabs.flatMap(t=>raw[t]||[]);
@@ -918,7 +935,7 @@ function renderCards() {
     cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
   }else{
     allFilteredRows.forEach((r,idx)=>{
-      const rank=idx+1;
+      const rank=rankMap[r.name+'|'+r.tambon]||idx+1;
       const avatar=r.prefix==='นาย'?'👨':'👩';
       const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
       const pNum=peopleNum(r.stats[1]);
