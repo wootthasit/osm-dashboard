@@ -111,6 +111,29 @@
   .fill-pink{background:linear-gradient(90deg,#f9a8d4,#ec4899);}
   .progress-extra{font-size:12px;color:var(--green-dark);font-weight:600;margin-top:6px;}
 
+  
+  /* AWARD SUMMARY CARDS */
+  .award-cards{background:white;border-radius:16px;padding:12px;margin:10px 0 0;box-shadow:var(--shadow);}
+  .award-cards-title{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--dark);}
+  .award-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f4f8;}
+  .award-row:last-child{border-bottom:none;}
+  .award-icon{font-size:20px;width:32px;text-align:center;flex-shrink:0;}
+  .award-info{flex:1;min-width:0;}
+  .award-label{font-size:13px;font-weight:600;color:var(--dark);}
+  .award-desc{font-size:11px;color:var(--gray);}
+  .award-count{font-size:18px;font-weight:700;flex-shrink:0;min-width:40px;text-align:right;}
+  .award-count.trophy-c{color:var(--green);}
+  .award-count.gold-c{color:var(--green);}
+  .award-count.none-c{color:var(--orange);}
+  .award-count.zero-c{color:var(--gray);}
+
+  
+  .person-motivation{font-size:12px;margin-top:3px;line-height:1.5;}
+  .motiv-excellent{color:var(--green);}
+  .motiv-blue{color:var(--blue);}
+  .motiv-orange{color:#d97706;}
+  .motiv-gray{color:var(--gray);}
+
   /* PERSON CARDS */
   .person-card{background:white;border-radius:14px;padding:13px 14px;margin-bottom:9px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px;position:relative;overflow:hidden;transition:transform 0.15s;}
   .person-card:active{transform:scale(0.98);}
@@ -137,7 +160,7 @@
   .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--green);}
   .hero-num{font-size:40px;font-weight:700;color:var(--green);line-height:1;}
   .hero-badge{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;color:var(--green);margin-top:4px;}
-  .hero-sub{font-size:14px;color:var(--green);margin-top:4px;font-weight:600;}
+  .hero-sub{font-size:14px;color:var(--green);margin-top:8px;padding-top:8px;border-top:2px solid #b0b8c4;font-weight:600;}
 
   /* SMALL STAT CARDS — row of 3 */
   .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;}
@@ -274,12 +297,12 @@
    CONFIG: 6 สถานะอสม. ทั้งหมด
    ========================================================== */
 const METRICS = [
-  { key:'self',    col:8,  name:'คัดกรองตนเอง',    color:'var(--green)',  fill:'fill-green',  defaultOn:true },
+  { key:'self',    col:8,  name:'คัดกรองตนเอง',    color:'var(--green)',  fill:'fill-green',  defaultOn:false },
   { key:'people',  col:9,  name:'คัดกรองประชาชน',   color:'var(--blue)',   fill:'fill-blue',   defaultOn:true },
-  { key:'advise',  col:10, name:'ให้คำแนะนำฯ',      color:'var(--purple)', fill:'fill-purple',  defaultOn:false },
-  { key:'osk',     col:11, name:'สร้าง อสค.',       color:'#14b8a6',      fill:'fill-teal',   defaultOn:false },
-  { key:'visit',   col:12, name:'เยี่ยมบ้าน',       color:'#ec4899',      fill:'fill-pink',   defaultOn:false },
-  { key:'ncds',    col:13, name:'รณรงค์ NCDs',      color:'var(--orange)', fill:'fill-orange',  defaultOn:false },
+  { key:'advise',  col:10, name:'ให้คำแนะนำฯ',      color:'var(--purple)', fill:'fill-purple',  defaultOn:true },
+  { key:'osk',     col:11, name:'สร้าง อสค.',       color:'#14b8a6',      fill:'fill-teal',   defaultOn:true },
+  { key:'visit',   col:12, name:'เยี่ยมบ้าน',       color:'#ec4899',      fill:'fill-pink',   defaultOn:true },
+  { key:'ncds',    col:13, name:'รณรงค์ NCDs',      color:'var(--orange)', fill:'fill-orange',  defaultOn:true },
 ];
 const MEDAL_GOLD = 50;    // 50-99: 🥇 เหรียญทอง
 
@@ -686,19 +709,22 @@ function renderCardsOnly(){
   if(!allFilteredRows.length){
     cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
   }else{
-    allFilteredRows.forEach(r=>{
+    allFilteredRows.forEach((r,idx)=>{
+      const rank=idx+1;
       const avatar=r.prefix==='นาย'?'👨':'👩';
       const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
       const pNum=peopleNum(r.stats[1]);
       const medal=getMedalTier(pNum);
+      const motiv=getMotivation(r, sel);
       cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
       if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
-      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div><div class="person-info"><div class="person-name">${r.prefix} ${r.name}</div><div class="person-num">ตำบล${r.tambon}</div><div class="status-row">`;
+      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div><div class="person-info"><div class="person-name"><span style="color:${rank<=10?'var(--green)':'var(--gray)'};font-size:${rank<=10?'14px':'12px'};font-weight:700;margin-right:4px;">#${rank}</span>${r.prefix} ${r.name}</div><div class="person-motivation ${motiv.cls}">${motiv.text}</div><div class="status-row">`;
       sel.forEach((m,i)=>{
         const mi=activeMetrics[i];const done=isDone(r.stats[mi]);
-        let label=done?'สำเร็จ':'รอดำเนินการ';
-        if(mi===1&&done&&pNum>0) label=`${pNum} คน`;
-        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
+        let label=done?'สำเร็จ':'';
+        if(mi===1&&done&&pNum>0) label=pNum+' คน';
+        const icon=done?'✓':'⏳';
+        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${icon} ${m.name}${done&&label?': '+label:''}</span>`;
       });
       cardHtml+=`</div></div></div>`;
     });
@@ -785,6 +811,32 @@ function buildProgressHtml(title, allRows, sel) {
   return h;
 }
 
+
+/* ===== ข้อความกำลังใจ ===== */
+function getMotivation(r, sel) {
+  const pNum = peopleNum(r.stats[1]);
+  const missionCount = sel.filter((m,i) => isDone(r.stats[activeMetrics[i]])).length;
+  const totalMissions = sel.length;
+  const allMissionsDone = missionCount === totalMissions;
+  const remaining = MEDAL_GOLD - pNum;
+
+  // [1] ครบภารกิจ + คัดกรอง ≥50
+  if (allMissionsDone && pNum >= MEDAL_GOLD)
+    return { text:'🎉 ยอดเยี่ยม! ครบทุกภารกิจแล้ว', cls:'motiv-excellent' };
+  // [2] ครบภารกิจ + คัดกรอง <50
+  if (allMissionsDone && pNum < MEDAL_GOLD)
+    return { text:`🎯 ภารกิจครบแล้ว • คัดกรองอีก ${remaining} คน ได้รับเหรียญทอง!`, cls:'motiv-blue' };
+  // [3] ไม่ครบภารกิจ (1-4)
+  if (missionCount > 0) {
+    const left = totalMissions - missionCount;
+    if (left === 1) return { text:`🔥 ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • อีกแค่ 1 ขั้นก็สำเร็จ!`, cls:'motiv-orange' };
+    if (missionCount >= Math.ceil(totalMissions/2)) return { text:`💪 ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • สู้ต่อได้เลย!`, cls:'motiv-orange' };
+    return { text:`⭐ ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • ทำต่อนะ!`, cls:'motiv-orange' };
+  }
+  // [4] ยังไม่ดำเนินการ
+  return { text:'⏳ ยังไม่ได้ดำเนินการ', cls:'motiv-gray' };
+}
+
 function getMedalTier(pNum){
   if(pNum>=TROPHY_GOLD) return {tier:2,icon:'🏆',label:'ถ้วยทอง',detail:'คัดกรอง ≥'+TROPHY_GOLD+' คน',cls:'trophy'};
   if(pNum>=MEDAL_GOLD) return {tier:1,icon:'🥇',label:'เหรียญทอง',detail:'คัดกรอง ≥'+MEDAL_GOLD+' คน',cls:'gold'};
@@ -821,17 +873,31 @@ function renderCards() {
     return bP-aP;
   });
 
-  /* Award banner — total + awards on one line */
+  /* Award summary cards */
   const allData=tabs.flatMap(t=>raw[t]||[]);
   const total=allData.length;
   const trophyCount=allData.filter(r=>peopleNum(r.stats[1])>=TROPHY_GOLD).length;
   const medalCount=allData.filter(r=>{const n=peopleNum(r.stats[1]);return n>=MEDAL_GOLD&&n<TROPHY_GOLD;}).length;
+  const noAwardCount=total-trophyCount-medalCount;
 
-  let bannerHtml=`🏥 อสม. ${tabLabel} <strong>${total}</strong> คน`;
-  if(trophyCount>0||medalCount>0){
-    bannerHtml+=` :<br>🏆 ถ้วยทอง <strong>${trophyCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${TROPHY_GOLD} คน)</span><br>🥇 เหรียญทอง <strong>${medalCount}</strong> คน <span style="opacity:0.6">(คัดกรอง ≥${MEDAL_GOLD} คน)</span>`;
-  }
-  html+=`<div class="award-banner">${bannerHtml}</div>`;
+  html+=`<div class="award-cards">
+    <div class="award-cards-title">🏅 สรุปรางวัล</div>
+    <div class="award-row">
+      <div class="award-icon">🏆</div>
+      <div class="award-info"><div class="award-label">ถ้วยทอง</div><div class="award-desc">คัดกรอง ≥${TROPHY_GOLD} คน</div></div>
+      <div class="award-count ${trophyCount>0?'trophy-c':'zero-c'}">${trophyCount} <span style="font-size:12px;font-weight:400;">คน</span></div>
+    </div>
+    <div class="award-row">
+      <div class="award-icon">🥇</div>
+      <div class="award-info"><div class="award-label">เหรียญทอง</div><div class="award-desc">คัดกรอง ≥${MEDAL_GOLD} คน</div></div>
+      <div class="award-count ${medalCount>0?'gold-c':'zero-c'}">${medalCount} <span style="font-size:12px;font-weight:400;">คน</span></div>
+    </div>
+    <div class="award-row">
+      <div class="award-icon">⏳</div>
+      <div class="award-info"><div class="award-label">ยังไม่มีรางวัล</div><div class="award-desc">คัดกรองน้อยกว่า ${MEDAL_GOLD} คน</div></div>
+      <div class="award-count ${noAwardCount>0?'none-c':'zero-c'}">${noAwardCount} <span style="font-size:12px;font-weight:400;">คน</span></div>
+    </div>
+  </div>`;
   document.getElementById('mainContent').innerHTML=html;
 
   /* ===== Search + Filter (static — ไม่ re-render input เพื่อป้องกัน focus หาย) ===== */
@@ -851,24 +917,27 @@ function renderCards() {
   if(!allFilteredRows.length){
     cardHtml=`<div class="empty"><div class="empty-icon">🔍</div>ไม่พบข้อมูล</div>`;
   }else{
-    allFilteredRows.forEach(r=>{
+    allFilteredRows.forEach((r,idx)=>{
+      const rank=idx+1;
       const avatar=r.prefix==='นาย'?'👨':'👩';
       const anyDone=sel.some((m,i)=>isDone(r.stats[activeMetrics[i]]));
       const pNum=peopleNum(r.stats[1]);
       const medal=getMedalTier(pNum);
+      const motiv=getMotivation(r, sel);
       cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
       if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
       cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
         <div class="person-info">
-          <div class="person-name">${r.prefix} ${r.name}</div>
-          <div class="person-num">ตำบล${r.tambon}</div>
+          <div class="person-name"><span style="color:${rank<=10?'var(--green)':'var(--gray)'};font-size:${rank<=10?'14px':'12px'};font-weight:700;margin-right:4px;">#${rank}</span>${r.prefix} ${r.name}</div>
+          <div class="person-motivation ${motiv.cls}">${motiv.text}</div>
           <div class="status-row">`;
       sel.forEach((m,i)=>{
         const mi=activeMetrics[i];
         const done=isDone(r.stats[mi]);
-        let label=done?'สำเร็จ':'รอดำเนินการ';
-        if(mi===1&&done&&pNum>0) label=`${pNum} คน`;
-        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${done?'✓':'○'} ${m.name}${done?': '+label:''}</span>`;
+        let label=done?'สำเร็จ':'';
+        if(mi===1&&done&&pNum>0) label=pNum+' คน';
+        const icon=done?'✓':'⏳';
+        cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${icon} ${m.name}${done&&label?': '+label:''}</span>`;
       });
       cardHtml+=`</div></div></div>`;
     });
