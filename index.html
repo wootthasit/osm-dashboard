@@ -128,11 +128,11 @@
   .award-count.zero-c{color:var(--gray);}
 
   
-  .person-motivation{font-size:12px;margin-top:3px;line-height:1.5;}
-  .motiv-excellent{color:var(--green);}
-  .motiv-blue{color:var(--blue);}
-  .motiv-orange{color:#d97706;}
-  .motiv-gray{color:var(--gray);}
+  .person-motivation{font-size:13.5px;font-weight:600;margin-top:6px;line-height:1.5;}
+  .motiv-excellent{color:var(--green-dark);}
+  .motiv-blue{color:#2563eb;}
+  .motiv-orange{color:#b45309;}
+  .motiv-gray{color:#6b7280;}
 
   /* PERSON CARDS */
   .person-card{background:white;border-radius:14px;padding:13px 14px;margin-bottom:9px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px;position:relative;overflow:hidden;transition:transform 0.15s;}
@@ -152,6 +152,8 @@
   .empty{text-align:center;padding:36px 20px;color:var(--gray);font-size:14px;}
   .empty-icon{font-size:36px;margin-bottom:10px;}
   .count-text{font-size:12px;color:var(--gray);padding:6px 0 2px;}
+  .btn-top{display:block;width:100%;padding:14px;border:none;border-radius:12px;margin:16px 0 24px;background:var(--green);color:white;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-align:center;box-shadow:var(--shadow);}
+  .btn-top:active{opacity:0.85;}
   @media(max-width:380px){.big-num{font-size:24px!important;}}
 
   /* HERO CARD (สำเร็จทุกรายการ) */
@@ -250,7 +252,7 @@
       <p>📌 <strong>ก่อนใช้งาน:</strong> ต้องแชร์ Google Sheets เป็น "ทุกคนที่มีลิงค์" → ผู้ดู</p>
       <p>💾 <strong>ลิงค์ที่ได้</strong> สามารถ bookmark หรือแชร์ให้ อสม. เปิดดูได้ทันที</p>
       <p>🔄 <strong>ข้อมูลจะอัปเดตอัตโนมัติ</strong> ทุกครั้งที่เปิดลิงค์</p>
-      <p style="margin-top:4px;border-top:2px solid #cbd5e1;padding-top:6px;text-align:center;">© 2569 วุฒสิต จารุกลัส | รพ.สต.ร่มโพธิ์ อ.เมือง จ.สมุทรปราการ</p>
+      <p style="margin-top:8px;padding-top:6px;text-align:center;">© 2569 วุฒสิต จารุกลัส | รพ.สต.ร่มโพธิ์ อ.เมือง จ.สมุทรปราการ</p>
     </div>
   </div>
 </div>
@@ -734,10 +736,10 @@ function renderCardsOnly(){
       const motiv=getMotivation(r, sel);
       cardHtml+=`<div class="person-card${medal.tier>0?' has-badge':''}">`;
       if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
-      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div><div class="person-info"><div class="person-name"><span style="color:${rank<=10?'var(--green)':'var(--gray)'};font-size:${rank<=10?'14px':'12px'};font-weight:700;margin-right:4px;">#${rank}</span>${r.prefix} ${r.name}</div><div class="person-motivation ${motiv.cls}">${motiv.text}</div><div class="status-row">`;
+      cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div><div class="person-info"><div class="person-name"><span style="color:${rank<=10?'var(--green)':'var(--gray)'};font-size:15px;font-weight:700;margin-right:4px;">#${rank}</span>${r.prefix} ${r.name}</div><div class="person-motivation ${motiv.cls}">${motiv.text}</div><div class="status-row">`;
       sel.forEach((m,i)=>{
         const mi=activeMetrics[i];const done=isDone(r.stats[mi]);
-        let label=done?'สำเร็จ':'';
+        let label='';
         if(mi===1&&done&&pNum>0) label=pNum+' คน';
         const icon=done?'✓':'⏳';
         cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${icon} ${m.name}${done&&label?': '+label:''}</span>`;
@@ -745,6 +747,7 @@ function renderCardsOnly(){
       cardHtml+=`</div></div></div>`;
     });
   }
+  if(allFilteredRows.length) cardHtml+='<button class="btn-top" onclick="window.scrollTo({top:0,behavior:&quot;smooth&quot;})">▲ กลับขึ้นด้านบน</button>';
   document.getElementById('cardContent').innerHTML=cardHtml;
   updateCardMinHeight();
   window.scrollTo(0,scrollY);
@@ -945,13 +948,13 @@ function renderCards() {
       if(medal.tier>0) cardHtml+=`<div class="rank-badge ${medal.cls}">${medal.icon} ${medal.label}</div>`;
       cardHtml+=`<div class="avatar ${anyDone?'done':'wait'}">${avatar}</div>
         <div class="person-info">
-          <div class="person-name"><span style="color:${rank<=10?'var(--green)':'var(--gray)'};font-size:${rank<=10?'14px':'12px'};font-weight:700;margin-right:4px;">#${rank}</span>${r.prefix} ${r.name}</div>
+          <div class="person-name"><span style="color:${rank<=10?'var(--green)':'var(--gray)'};font-size:15px;font-weight:700;margin-right:4px;">#${rank}</span>${r.prefix} ${r.name}</div>
           <div class="person-motivation ${motiv.cls}">${motiv.text}</div>
           <div class="status-row">`;
       sel.forEach((m,i)=>{
         const mi=activeMetrics[i];
         const done=isDone(r.stats[mi]);
-        let label=done?'สำเร็จ':'';
+        let label='';
         if(mi===1&&done&&pNum>0) label=pNum+' คน';
         const icon=done?'✓':'⏳';
         cardHtml+=`<span class="badge ${done?'badge-green':'badge-gray'}">${icon} ${m.name}${done&&label?': '+label:''}</span>`;
@@ -959,6 +962,7 @@ function renderCards() {
       cardHtml+=`</div></div></div>`;
     });
   }
+  if(allFilteredRows.length) cardHtml+='<button class="btn-top" onclick="window.scrollTo({top:0,behavior:&quot;smooth&quot;})">▲ กลับขึ้นด้านบน</button>';
   document.getElementById('cardContent').innerHTML=cardHtml;
   updateCardMinHeight();
   window.scrollTo(0,scrollY);
