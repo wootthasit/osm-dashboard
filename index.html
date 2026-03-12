@@ -848,10 +848,10 @@ function getMotivation(r, sel) {
     return { text:`🎯 ทำแล้ว ${totalMissions}/${totalMissions} ภารกิจ • คัดกรองอีก ${remaining} คน ได้รับเหรียญทองเลย!`, cls:'motiv-blue' };
   // [3] ได้เหรียญทองแล้ว แต่ภารกิจไม่ครบ
   if (pNum >= MEDAL_GOLD && !allMissionsDone)
-    return { text:`🥇 ได้เหรียญทองแล้ว! • ทำอีก ${leftMissions} ภารกิจ ก็สำเร็จ!`, cls:'motiv-orange' };
+    return { text:`🔥 ได้เหรียญทองแล้ว! • ทำอีก ${leftMissions} ภารกิจ ก็สำเร็จ!`, cls:'motiv-orange' };
   // [4] ภารกิจไม่ครบ + คัดกรอง <50 (เหลือ 1 ภารกิจ)
   if (missionCount > 0 && leftMissions === 1)
-    return { text:`🔥 ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • อีกแค่ 1 ขั้นก็สำเร็จ!`, cls:'motiv-orange' };
+    return { text:`⚡ ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • อีกแค่ 1 ขั้นก็สำเร็จ!`, cls:'motiv-orange' };
   // [5] ภารกิจไม่ครบ + คัดกรอง <50 (เหลือมากกว่า 1)
   if (missionCount > 0)
     return { text:`⭐ ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • ทำต่อนะ!`, cls:'motiv-orange' };
