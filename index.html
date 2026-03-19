@@ -839,7 +839,6 @@ function getMotivation(r, sel) {
   const allMissionsDone = missionCount === totalMissions;
   const remaining = MEDAL_GOLD - pNum;
 
-  // [1] ครบภารกิจ + คัดกรอง ≥50
   // [1a] ถ้วยทอง + ครบภารกิจ
   if (allMissionsDone && pNum >= TROPHY_GOLD)
     return { text:'🏆 ฮีโร่ชุมชน! ทำได้ถึง 100 คนแล้ว ชาว อสม. ภูมิใจในตัวคุณ!', cls:'motiv-excellent' };
@@ -848,7 +847,7 @@ function getMotivation(r, sel) {
     return { text:'🏅 สุดยอด! ทำสำเร็จทุกภารกิจแล้ว ขอบคุณที่ทุ่มเท!', cls:'motiv-excellent' };
   // [2] ครบภารกิจ + คัดกรอง <50
   if (allMissionsDone && pNum < MEDAL_GOLD)
-    return { text:`🎯 ภารกิจครบแล้ว • คัดกรองอีก ${remaining} คน ได้รับเหรียญทอง!`, cls:'motiv-blue' };
+    return { text:`🎯 ทำแล้ว ${missionCount}/${totalMissions} ภารกิจ • คัดกรองอีก ${remaining} คน ได้รับเหรียญทองเลย!`, cls:'motiv-blue' };
   // [3] ไม่ครบภารกิจ (1-4)
   if (missionCount > 0) {
     const left = totalMissions - missionCount;
