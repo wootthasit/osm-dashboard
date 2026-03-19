@@ -840,6 +840,9 @@ function getMotivation(r, sel) {
   const remaining = MEDAL_GOLD - pNum;
   const leftMissions = totalMissions - missionCount;
 
+  // [0] คัดกรอง ≥100 คน — ฮีโร่ชุมชน (override ทุก case)
+  if (pNum >= TROPHY_GOLD)
+    return { text:'🏆 ฮีโร่ชุมชน! ทำได้ถึง 100 คนแล้ว ชาว อสม. ภูมิใจในตัวคุณ!', cls:'motiv-excellent' };
   // [1] ครบภารกิจ + คัดกรอง ≥50
   if (allMissionsDone && pNum >= MEDAL_GOLD)
     return { text:'🏅 สุดยอด! ทำสำเร็จทุกภารกิจแล้ว ขอบคุณที่ทุ่มเท!', cls:'motiv-excellent' };
